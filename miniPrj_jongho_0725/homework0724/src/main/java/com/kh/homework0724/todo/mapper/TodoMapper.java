@@ -28,6 +28,21 @@ public interface TodoMapper {
             """)
     public List<TodoVo> todoList(PageVo pageVo);
 
+    @Select("""
+            SELECT
+            T.NO,
+            T.TITLE,
+            T.CONTENT,
+            S.STATUS_NAME,
+            T.CREATED_DATE
+            FROM TODO T
+            JOIN STATUS S ON T.STATUS_NO = S.STATUS_NO
+            WHERE T.DEL_YN = 'N' AND T.STATUS_NO = #{statusNo}
+            ORDER BY T.NO DESC
+            OFFSET #{pageVo.offset} ROWS FETCH NEXT #{pageVo.boardLimit} ROW ONLY
+            """)
+    public List<TodoVo> todoListByStatus(PageVo pageVo, int statusNo);
+
     @Insert("""
             INSERT INTO TODO(
             NO,
@@ -78,4 +93,9 @@ public interface TodoMapper {
             SELECT COUNT(*) FROM TODO WHERE DEL_YN = 'N'
             """)
     int pageCnt();
+
+    @Select("""
+            SELECT COUNT(*) FROM TODO WHERE DEL_YN = 'N' AND STATUS_NO = #{statusNo}
+            """)
+    int pageCntByStatus(int statusNo);
 }

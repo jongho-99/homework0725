@@ -21,6 +21,10 @@ public class TodoService {
         return todoMapper.todoList(pageVo);
     }
 
+    public List<TodoVo> todoListByStatus(PageVo pageVo, int statusNo) {
+        return todoMapper.todoListByStatus(pageVo, statusNo);
+    }
+
     public int todoInsert(TodoVo vo) {
         return todoMapper.todoInsert(vo);
     }
@@ -43,5 +47,9 @@ public class TodoService {
 
     public int pageCnt() {
         return todoMapper.pageCnt();
+    }
+
+    public int pageCntByStatus(int statusNo) {
+        return todoMapper.pageCntByStatus(statusNo);
     }
 }

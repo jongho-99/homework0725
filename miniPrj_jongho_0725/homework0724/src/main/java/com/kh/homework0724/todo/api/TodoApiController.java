@@ -25,13 +25,33 @@ public class TodoApiController {
     @GetMapping("{no}")
     public ResponseEntity<Map<String,Object>> todoList(@PathVariable int no) {
 
-
-
         int pageCnt = todoService.pageCnt();
 
-        PageVo pageVo = new PageVo(pageCnt, no, 5, 10);
+        PageVo pageVo = new PageVo(pageCnt, no, 5, 5);
 
         List<TodoVo> voList = todoService.todoList(pageVo);
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("voList", voList);
+        map.put("pageVo", pageVo);
+
+        if(voList != null) {
+            return ResponseEntity.ok().body(map);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+        }
+
+    }
+
+    @GetMapping("{statusNo}/{no}")
+    public ResponseEntity<Map<String,Object>> todoListByStatus(@PathVariable int no, @PathVariable int statusNo) {
+
+        int pageCnt = todoService.pageCntByStatus(statusNo);
+
+        PageVo pageVo = new PageVo(pageCnt, no, 5, 5);
+
+        List<TodoVo> voList = todoService.todoListByStatus(pageVo, statusNo);
 
         Map<String, Object> map = new HashMap<>();
 
