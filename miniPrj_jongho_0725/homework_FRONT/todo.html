@@ -81,19 +81,35 @@
       font-weight: bold;
      }
 
-  #btnGroup {
+   #btnGroup {
     width: 100%;
     max-width: 1200px;
     display: flex;
-    justify-content: flex-start;  /* 왼쪽 정렬 */
+    justify-content: space-between;  /* 왼쪽 정렬 */
     margin-bottom: 1rem;
+    align-items: center;
+}
+
+.btn-group {
+  height: 40px;
+}
+body {
+  background-color: #edf2f7;
+}
+
+h1 {
+  font-size: 3rem;
+  font-family: 'Jua', sans-serif;
+  color: #007bff;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 </style>
 </head>
 <body>
 
-    <h1>할일이에여 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</h1>
+    <h1>Todo List</h1>
 
     <div id="btnGroup">
         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
@@ -109,6 +125,10 @@
           <input type="radio" class="btn-check" data="fxBnt" name="btnradio" id="btnradio4" autocomplete="off" value="3">
           <label class="btn btn-outline-primary" for="btnradio4">완료</label>
         </div>
+        <!-- 등록하기 버튼 -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerModal">
+            등록하기
+        </button>
       </div>
     <table class="table table-dark table-striped">
   <thead>
@@ -150,10 +170,6 @@
 <br>
 
 
-<!-- 등록하기 버튼 -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerModal">
-  등록하기
-</button>
 
 <!-- 등록 모달 -->
 <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
