@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/todo")
-@CrossOrigin(value = "http://192.168.110.56:5500")
+@CrossOrigin(value = "*")
 public class TodoApiController {
 
     private final TodoService todoService;
