@@ -3,7 +3,7 @@
  let currentPage = 1;
  function todoList(currentPage) {
     
-    const url = `http://127.0.0.1:8080/api/todo/${currentPage}`
+    const url = `/api/todo/${currentPage}`
 
     fetch(url)
     .then(resp => resp.json())
@@ -82,7 +82,7 @@ function openEditModal(no, title, content, statusName) {
 
 
  function todoInsert() {
-    const url = "http://127.0.0.1:8080/api/todo"
+    const url = "/api/todo"
 
     const title = document.querySelector("#insertTitle").value;
     const content = document.querySelector("#insertContent").value;
@@ -129,7 +129,7 @@ function openEditModal(no, title, content, statusName) {
 let no;
 
  function todoUpdate() {
-    const url = "http://127.0.0.1:8080/api/todo";
+    const url = "/api/todo";
 
     const title = document.querySelector("#updateTitle").value;
     const content = document.querySelector("#updateContent").value;
@@ -174,7 +174,7 @@ let no;
 }
 
  function todoDelete(no) {
-    const url = "http://127.0.0.1:8080/api/todo"
+    const url = "/api/todo"
 
     const vo = {
         no
@@ -211,7 +211,7 @@ let no;
 
 
 function statusList() {
-    const url = "http://127.0.0.1:8080/api/todo/statusList"
+    const url = "/api/todo/statusList"
 
     fetch(url)
     .then(resp => resp.json())
