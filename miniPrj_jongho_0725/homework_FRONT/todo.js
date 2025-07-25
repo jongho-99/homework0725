@@ -3,7 +3,7 @@
  let currentPage = 1;
  function todoList(currentPage) {
     
-    const url = `/api/todo/${currentPage}`
+    const url = `http://127.0.0.1:8080/api/todo/${currentPage}`
 
     fetch(url)
     .then(resp => resp.json())
@@ -44,7 +44,7 @@
 
         const pageAreaDiv = document.querySelector('#page-area');
         let pageStr = '';
-        if (pvo.startpPage != 1)
+        if (pvo.startPage != 1)
             pageStr += `<button class="btn btn-outline-primary" onclick="todoList(${pvo.startPage - 1})">이전</button>`;
 
         for (let i = pvo.startPage; i <= pvo.endPage; ++i) {
@@ -63,7 +63,91 @@
     })
  }
 
- todoList(currentPage);
+  todoList(currentPage);
+
+ const btnGroup = document.querySelectorAll("input[data=fxBnt]");
+
+ btnGroup.forEach(e => {
+    e.addEventListener("click", (e) => {
+    todoListByStatus(currentPage, e.target.value);
+    })
+ })
+
+ const statusAll = document.querySelector("#btnradio1");
+
+ statusAll.addEventListener("click", () => {
+    todoList(1);
+ })
+
+
+
+function todoListByStatus(currentPage, statusNo) {
+    
+    const url = `http://127.0.0.1:8080/api/todo/${statusNo}/${currentPage}`
+
+    fetch(url)
+    .then(resp => resp.json())
+    .then(map => {
+
+        const voList = map.voList;
+        const pvo = map.pageVo;
+
+        const tb = document.querySelector("#tb");
+
+        tb.innerHTML = '';
+        let str = '';
+        for(let vo of voList) {
+
+            str += `
+                <tr>
+                    <th scope="row">${vo.no}</th>
+                    <td>${vo.title}</td>
+                    <td>${vo.content}</td>
+                    <td>${vo.statusName}</td>
+                    <td>${vo.createdDate}</td>
+                    <td>
+                    <button type="button" class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editModal"
+                    onclick="openEditModal('${vo.no}', '${vo.title}', '${vo.content}', '${vo.statusName}')">
+                    수정하기
+                    </button>
+                    </td>
+                    <td>
+                    <button type="button" class="btn btn-danger" onclick="todoDelete(${vo.no})">삭제하기</button>
+                    </td>
+                </tr>
+            `
+        }
+
+        tb.innerHTML = str;
+
+        const pageAreaDiv = document.querySelector('#page-area');
+        let pageStr = '';
+        if (pvo.startPage != 1)
+            pageStr += `<button class="btn btn-outline-primary" onclick="todoListByStatus(${pvo.startPage - 1},${statusNo})">이전</button>`;
+
+        for (let i = pvo.startPage; i <= pvo.endPage; ++i) {
+            if (i == currentPage) {
+            pageStr += `<button class="btn btn-outline-primary" class="active" onclick="todoListByStatus(${i},${statusNo})">${i}</button>`;
+            } else {
+            pageStr += `<button class="btn btn-outline-primary" onclick="todoListByStatus(${i},${statusNo})">${i}</button>`;
+            }
+        }
+
+        if (pvo.endPage != pvo.maxPage)
+            pageStr += `<button class="btn btn-outline-primary" onclick="todoListByStatus(${pvo.endPage + 1},${statusNo})">다음</button>`;
+
+        pageAreaDiv.innerHTML = pageStr;
+
+    })
+ }
+
+
+
+
+
+
 
 let editNo = null;  // 전역으로 수정 대상 번호 저장
 let currentStatusName = null; //전역으로 수정 대상 상태 번호 저장
@@ -82,7 +166,7 @@ function openEditModal(no, title, content, statusName) {
 
 
  function todoInsert() {
-    const url = "/api/todo"
+    const url = "http://127.0.0.1:8080/api/todo"
 
     const title = document.querySelector("#insertTitle").value;
     const content = document.querySelector("#insertContent").value;
@@ -129,7 +213,7 @@ function openEditModal(no, title, content, statusName) {
 let no;
 
  function todoUpdate() {
-    const url = "/api/todo";
+    const url = "http://127.0.0.1:8080/api/todo";
 
     const title = document.querySelector("#updateTitle").value;
     const content = document.querySelector("#updateContent").value;
@@ -174,7 +258,7 @@ let no;
 }
 
  function todoDelete(no) {
-    const url = "/api/todo"
+    const url = "http://127.0.0.1:8080/api/todo"
 
     const vo = {
         no
@@ -192,18 +276,18 @@ let no;
 
         if(result == 1) {
             Swal.fire({
-    title: "삭제되었습니다",
-    text: "",
-    icon: "success"   
-    });
+            title: "삭제되었습니다",
+            text: "",
+            icon: "success"   
+            });
             todoList(1);
         } else {
             Swal.fire({
-  icon: "error",
-  title: "삭제실패에요ㅠㅠㅠㅠ",
-  text: "제대로 작동 안댔다고 !!!!!!!!!!!!!!",
-  footer: '<a href="#">Why do I have this issue?</a>'
-});
+            icon: "error",
+            title: "삭제실패에요ㅠㅠㅠㅠ",
+            text: "제대로 작동 안댔다고 !!!!!!!!!!!!!!",
+            footer: '<a href="#">Why do I have this issue?</a>'
+            });
         }
         
     })
@@ -211,7 +295,7 @@ let no;
 
 
 function statusList() {
-    const url = "/api/todo/statusList"
+    const url = "http://127.0.0.1:8080/api/todo/statusList"
 
     fetch(url)
     .then(resp => resp.json())
